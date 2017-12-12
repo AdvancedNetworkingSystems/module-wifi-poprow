@@ -128,3 +128,8 @@ class PoprowWifiModule(wishful_module_wifi.WifiModule):
             self.set_modulation_rate(rate)
             self.set_tx_power(txpower)
 
+    @wishful_module.bind_function(upis.radio.interface_down)
+    def interface_down(self):
+        if_down_cmd = "sudo ifconfig {} down".format(self.interface)
+        [rcode, sout, serr] = run_command(if_down_cmd)
+        self.log.debug("Bringing interface {} down".format(self.interface))
