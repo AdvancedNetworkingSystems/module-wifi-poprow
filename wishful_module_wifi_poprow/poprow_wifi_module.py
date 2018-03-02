@@ -53,8 +53,8 @@ class PoprowWifiModule(wishful_module_wifi.WifiModule):
                     rts='off', mac_address="aa:bb:cc:dd:ee:ff",
                     skip_reload=False):
 
-        # search for a wifi device that only has HT and not VHT
-        intcap = "HT"
+        # search for a wifi device that does not have VHT
+        intcap = "VHT"
 
         wifi_int = pyw.winterfaces()
         for wifi_int_name in wifi_int:
@@ -74,7 +74,7 @@ class PoprowWifiModule(wishful_module_wifi.WifiModule):
         for phy in phys:
             phy_info = pyw.phyinfo(pyw.Card(phy[0], None, 0))
             if phy_info['bands'].get(self.band) and phy_info.get('modes'):
-                if bool(phy_info['bands'][self.band][intcap]):
+                if not bool(phy_info['bands'][self.band][intcap]):
                     if 'ibss' in phy_info['modes']:
                         selected_phy = phy
                         break
